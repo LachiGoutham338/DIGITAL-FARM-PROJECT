@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Farm Income</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #e8f5e9;
+        }
+
+        .topbar {
+            background: #2e7d32;
+            color: white;
+            padding: 18px 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar h2 {
+            margin: 0;
+        }
+
+        .dashboard-btn {
+            color: white;
+            text-decoration: none;
+            background: #43a047;
+            padding: 10px 18px;
+            border-radius: 7px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 35px auto;
+        }
+
+        .form-card {
+            background: white;
+            width: 100%;
+            max-width: 550px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.12);
+        }
+
+        .form-card h1 {
+            text-align: center;
+            color: #2e7d32;
+            margin-top: 0;
+            margin-bottom: 28px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-top: 18px;
+            margin-bottom: 7px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border: 2px solid #43a047;
+        }
+
+        .save-btn {
+            width: 100%;
+            margin-top: 28px;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: #43a047;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            background: #2e7d32;
+        }
+
+        .records {
+            margin-top: 35px;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        }
+
+        .records h2 {
+            color: #2e7d32;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .empty {
+            text-align: center;
+            color: #777;
+            padding: 20px;
+        }
+
+        .message {
+            max-width: 550px;
+            margin: 0 auto 20px auto;
+            padding: 12px;
+            background: #dff0d8;
+            color: #33691e;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        @media(max-width:600px) {
+
+            .topbar {
+                padding: 15px;
+            }
+
+            .topbar h2 {
+                font-size: 17px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .form-card {
+                padding: 22px;
+            }
+
+            table {
+                font-size: 13px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="topbar">
+
+    <h2>🌾 Digital Farm Record System</h2>
+
+    <a href="{{ url_for('dashboard') }}"
+       class="dashboard-btn">
+        ← Dashboard
+    </a>
+
+</div>
+
+
+<div class="container">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            {% for category, message in messages %}
+
+                <div class="message">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    <!-- INCOME FORM -->
+
+    <div class="form-card">
+
+        <h1>💰 FARM INCOME</h1>
+
+        <form method="POST"
+              action="{{ url_for('income') }}">
+
+            <label>Crop Name</label>
+
+            <input
+                type="text"
+                name="crop_name"
+                list="cropList"
+                placeholder="🔍 Select or type crop..."
+                required
+            >
+
+            <datalist id="cropList">
+
+                {% for crop in crops %}
+
+                    <option value="{{ crop.crop_name }}">
+
+                {% endfor %}
+
+                <option value="Rice">
+                <option value="Wheat">
+                <option value="Maize">
+                <option value="Cotton">
+                <option value="Sugarcane">
+                <option value="Tomato">
+                <option value="Onion">
+                <option value="Potato">
+                <option value="Groundnut">
+                <option value="Other">
+
+            </datalist>
+
+
+            <label>Quantity</label>
+
+            <input
+                type="number"
+                name="quantity"
+                min="0"
+                step="0.01"
+                placeholder="Enter quantity in kg"
+                required
+            >
+
+
+            <label>Amount</label>
+
+            <input
+                type="number"
+                name="amount"
+                min="0"
+                step="0.01"
+                placeholder="₹ Enter income amount"
+                required
+            >
+
+
+            <label>Date</label>
+
+            <input
+                type="date"
+                name="date"
+                required
+            >
+
+
+            <button type="submit"
+                    class="save-btn">
+
+                💾 Save Income
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- SAVED RECORDS -->
+
+    <div class="records">
+
+        <h2>📋 Saved Income Records</h2>
+
+        {% if income %}
+
+        <table>
+
+            <tr>
+                <th>ID</th>
+                <th>Crop Name</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+                <th>Date</th>
+            </tr>
+
+            {% for item in income %}
+
+            <tr>
+
+                <td>{{ item.id }}</td>
+
+                <td>🌱 {{ item.crop_name }}</td>
+
+                <td>{{ item.quantity }} kg</td>
+
+                <td>₹ {{ item.amount }}</td>
+
+                <td>{{ item.date }}</td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+        {% else %}
+
+        <div class="empty">
+            No income records added yet.
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Farm Expense</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #fff8e1;
+        }
+
+        /* TOP BAR */
+
+        .topbar {
+            background: #e65100;
+            color: white;
+            padding: 18px 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar h2 {
+            margin: 0;
+        }
+
+        .dashboard-btn {
+            color: white;
+            text-decoration: none;
+            background: #ef6c00;
+            padding: 10px 18px;
+            border-radius: 7px;
+        }
+
+        .dashboard-btn:hover {
+            background: #d84315;
+        }
+
+
+        /* MAIN CONTAINER */
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 35px auto;
+        }
+
+
+        /* FORM CARD */
+
+        .form-card {
+            background: white;
+
+            width: 100%;
+            max-width: 550px;
+
+            margin: auto;
+
+            padding: 30px;
+
+            border-radius: 18px;
+
+            box-shadow: 0 6px 25px rgba(0,0,0,0.12);
+        }
+
+
+        /* TITLE */
+
+        .form-card h1 {
+            text-align: center;
+
+            color: #e65100;
+
+            margin-top: 0;
+
+            margin-bottom: 28px;
+        }
+
+
+        /* LABEL */
+
+        label {
+            display: block;
+
+            font-weight: bold;
+
+            color: #333;
+
+            margin-top: 18px;
+
+            margin-bottom: 7px;
+        }
+
+
+        /* INPUT */
+
+        input {
+            width: 100%;
+
+            padding: 13px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            background: white;
+        }
+
+
+        input:focus {
+            outline: none;
+
+            border: 2px solid #ef6c00;
+
+            box-shadow: 0 0 5px rgba(239,108,0,0.2);
+        }
+
+
+        /* SAVE BUTTON */
+
+        .save-btn {
+            width: 100%;
+
+            margin-top: 28px;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #ef6c00;
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            background: #e65100;
+        }
+
+
+        /* RECORDS */
+
+        .records {
+            margin-top: 35px;
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        }
+
+        .records h2 {
+            color: #e65100;
+
+            margin-top: 0;
+        }
+
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+
+            border-bottom: 1px solid #ddd;
+
+            text-align: left;
+        }
+
+        th {
+            background: #fff3e0;
+
+            color: #e65100;
+        }
+
+        tr:hover {
+            background: #fffaf2;
+        }
+
+
+        .empty {
+            text-align: center;
+
+            color: #777;
+
+            padding: 20px;
+        }
+
+
+        /* SUCCESS MESSAGE */
+
+        .message {
+            max-width: 550px;
+
+            margin: 0 auto 20px auto;
+
+            padding: 12px;
+
+            background: #dff0d8;
+
+            color: #33691e;
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            font-weight: bold;
+        }
+
+
+        /* MOBILE */
+
+        @media(max-width: 600px) {
+
+            .topbar {
+                padding: 15px;
+            }
+
+            .topbar h2 {
+                font-size: 17px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .form-card {
+                padding: 22px;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================================================= -->
+<!-- TOP BAR -->
+<!-- ================================================= -->
+
+<div class="topbar">
+
+    <h2>🌾 Digital Farm Record System</h2>
+
+    <a href="{{ url_for('dashboard') }}"
+       class="dashboard-btn">
+
+        ← Dashboard
+
+    </a>
+
+</div>
+
+
+
+<div class="container">
+
+
+    <!-- ================================================= -->
+    <!-- FLASH MESSAGE -->
+    <!-- ================================================= -->
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            {% for category, message in messages %}
+
+                <div class="message">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+
+    <!-- ================================================= -->
+    <!-- EXPENSE FORM -->
+    <!-- ================================================= -->
+
+    <div class="form-card">
+
+        <h1>
+            💸 FARM EXPENSE
+        </h1>
+
+
+        <form method="POST"
+              action="{{ url_for('expenses') }}">
+
+
+            <!-- ================================================= -->
+            <!-- EXPENSE TYPE -->
+            <!-- ================================================= -->
+
+            <label>
+                Expense Type
+            </label>
+
+            <input
+                type="text"
+                name="expense_type"
+                list="expenseList"
+                placeholder="🔍 Select or type expense..."
+                autocomplete="off"
+                required
+            >
+
+            <datalist id="expenseList">
+
+                <option value="Seeds">
+
+                <option value="Fertilizer">
+
+                <option value="Labour">
+
+                <option value="Pesticides">
+
+                <option value="Irrigation">
+
+                <option value="Tractor">
+
+                <option value="Transportation">
+
+                <option value="Equipment">
+
+                <option value="Electricity">
+
+                <option value="Machinery">
+
+                <option value="Other">
+
+            </datalist>
+
+
+
+            <!-- ================================================= -->
+            <!-- AMOUNT -->
+            <!-- ================================================= -->
+
+            <label>
+                Amount
+            </label>
+
+            <input
+                type="number"
+                name="amount"
+                min="0"
+                step="0.01"
+                placeholder="₹ Enter expense amount"
+                required
+            >
+
+
+
+            <!-- ================================================= -->
+            <!-- DATE -->
+            <!-- ================================================= -->
+
+            <label>
+                Date
+            </label>
+
+            <input
+                type="date"
+                name="date"
+                required
+            >
+
+
+
+            <!-- ================================================= -->
+            <!-- SAVE -->
+            <!-- ================================================= -->
+
+            <button
+                type="submit"
+                class="save-btn">
+
+                💾 Save Expense
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+
+    <!-- ================================================= -->
+    <!-- SAVED EXPENSE RECORDS -->
+    <!-- ================================================= -->
+
+    <div class="records">
+
+        <h2>
+            📋 Saved Expense Records
+        </h2>
+
+
+        {% if expenses %}
+
+
+        <table>
+
+            <tr>
+
+                <th>
+                    ID
+                </th>
+
+                <th>
+                    Expense Type
+                </th>
+
+                <th>
+                    Amount
+                </th>
+
+                <th>
+                    Date
+                </th>
+
+            </tr>
+
+
+            {% for expense in expenses %}
+
+
+            <tr>
+
+                <td>
+                    {{ expense.id }}
+                </td>
+
+                <td>
+                    💸 {{ expense.expense_type }}
+                </td>
+
+                <td>
+                    ₹ {{ expense.amount }}
+                </td>
+
+                <td>
+                    📅 {{ expense.date }}
+                </td>
+
+            </tr>
+
+
+            {% endfor %}
+
+
+        </table>
+
+
+        {% else %}
+
+
+        <div class="empty">
+
+            No expense records added yet.
+
+        </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

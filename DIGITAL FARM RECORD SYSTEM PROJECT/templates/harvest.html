@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Harvest Record</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #fff8e1;
+        }
+
+        .topbar {
+            background: #ef6c00;
+            color: white;
+            padding: 18px 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar h2 {
+            margin: 0;
+        }
+
+        .dashboard-btn {
+            color: white;
+            text-decoration: none;
+            background: #fb8c00;
+            padding: 10px 18px;
+            border-radius: 7px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 35px auto;
+        }
+
+        .form-card {
+            background: white;
+            width: 100%;
+            max-width: 550px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.12);
+        }
+
+        .form-card h1 {
+            text-align: center;
+            color: #ef6c00;
+            margin-top: 0;
+            margin-bottom: 28px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-top: 18px;
+            margin-bottom: 7px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border: 2px solid #fb8c00;
+        }
+
+        .save-btn {
+            width: 100%;
+            margin-top: 28px;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: #fb8c00;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            background: #ef6c00;
+        }
+
+        .records {
+            margin-top: 35px;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        }
+
+        .records h2 {
+            color: #ef6c00;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .empty {
+            text-align: center;
+            color: #777;
+            padding: 20px;
+        }
+
+        .message {
+            max-width: 550px;
+            margin: 0 auto 20px auto;
+            padding: 12px;
+            background: #dff0d8;
+            color: #33691e;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="topbar">
+
+    <h2>🌾 Digital Farm Record System</h2>
+
+    <a href="{{ url_for('dashboard') }}"
+       class="dashboard-btn">
+
+        ← Dashboard
+
+    </a>
+
+</div>
+
+
+<div class="container">
+
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            {% for category, message in messages %}
+
+                <div class="message">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    <!-- HARVEST FORM -->
+
+    <div class="form-card">
+
+        <h1>🌾 HARVEST RECORD</h1>
+
+        <form method="POST"
+              action="{{ url_for('harvest') }}">
+
+
+            <label>Crop Name</label>
+
+            <input
+                type="text"
+                name="crop_name"
+                list="cropList"
+                placeholder="🔍 Select or type crop..."
+                required
+            >
+
+            <datalist id="cropList">
+
+                {% for crop in crops %}
+
+                    <option value="{{ crop.crop_name }}">
+
+                {% endfor %}
+
+                <option value="Rice">
+                <option value="Wheat">
+                <option value="Maize">
+                <option value="Cotton">
+                <option value="Sugarcane">
+                <option value="Tomato">
+                <option value="Onion">
+                <option value="Potato">
+                <option value="Groundnut">
+                <option value="Other">
+
+            </datalist>
+
+
+            <label>Harvest Date</label>
+
+            <input
+                type="date"
+                name="harvest_date"
+                required
+            >
+
+
+            <label>Yield Quantity</label>
+
+            <input
+                type="number"
+                name="yield_quantity"
+                min="0"
+                step="0.01"
+                placeholder="Enter yield quantity in kg"
+                required
+            >
+
+
+            <button type="submit"
+                    class="save-btn">
+
+                💾 Save Harvest
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- SAVED HARVEST -->
+
+    <div class="records">
+
+        <h2>📋 Saved Harvest Records</h2>
+
+        {% if harvest %}
+
+        <table>
+
+            <tr>
+
+                <th>ID</th>
+                <th>Crop Name</th>
+                <th>Harvest Date</th>
+                <th>Yield Quantity</th>
+
+            </tr>
+
+
+            {% for item in harvest %}
+
+            <tr>
+
+                <td>{{ item.id }}</td>
+
+                <td>🌱 {{ item.crop_name }}</td>
+
+                <td>📅 {{ item.harvest_date }}</td>
+
+                <td>🌾 {{ item.yield_quantity }} kg</td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+        {% else %}
+
+        <div class="empty">
+            No harvest records added yet.
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

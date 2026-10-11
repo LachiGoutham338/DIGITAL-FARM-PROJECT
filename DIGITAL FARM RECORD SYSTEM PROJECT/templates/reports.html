@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Farm Reports | Digital Farm Record System</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f8f4;
+            color: #263238;
+        }
+
+        /* ==============================
+           HEADER
+        ============================== */
+
+        .header {
+            background: linear-gradient(135deg, #1b5e20, #43a047);
+            color: white;
+            padding: 22px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+
+        .header-left h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .header-left p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: white;
+            background: rgba(255,255,255,0.18);
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.30);
+        }
+
+        /* ==============================
+           MAIN CONTAINER
+        ============================== */
+
+        .container {
+            width: 92%;
+            max-width: 1250px;
+            margin: 30px auto;
+        }
+
+        /* ==============================
+           REPORT TITLE
+        ============================== */
+
+        .report-heading {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .report-heading h2 {
+            color: #1b5e20;
+            margin-bottom: 8px;
+            font-size: 24px;
+        }
+
+        .report-heading p {
+            color: #666;
+            font-size: 15px;
+        }
+
+        /* ==============================
+           DOWNLOAD AREA
+        ============================== */
+
+        .download-section {
+            background: linear-gradient(135deg, #ffffff, #f1f8f2);
+            border: 1px solid #dce9dd;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+        }
+
+        .download-section h3 {
+            color: #1b5e20;
+            margin-bottom: 8px;
+        }
+
+        .download-section p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .download-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: white;
+            padding: 13px 24px;
+            border-radius: 9px;
+            font-weight: bold;
+            transition: 0.3s;
+            border: none;
+        }
+
+        .pdf-btn {
+            background: #c62828;
+        }
+
+        .pdf-btn:hover {
+            background: #a51f1f;
+            transform: translateY(-2px);
+        }
+
+        .excel-btn {
+            background: #2e7d32;
+        }
+
+        .excel-btn:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+        }
+
+        /* ==============================
+           WEATHER SECTION
+        ============================== */
+
+        .weather-section {
+            background: linear-gradient(135deg, #e8f5e9, #ffffff);
+            border: 1px solid #c8e6c9;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        }
+
+        .weather-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .weather-text h3 {
+            color: #1b5e20;
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .weather-text p {
+            color: #666;
+            line-height: 1.6;
+            max-width: 700px;
+        }
+
+        .weather-btn {
+            display: inline-block;
+            text-decoration: none;
+            background: linear-gradient(135deg, #1976d2, #42a5f5);
+            color: white;
+            padding: 14px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 15px;
+            box-shadow: 0 4px 10px rgba(25,118,210,0.25);
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .weather-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(25,118,210,0.35);
+        }
+
+        .weather-icon {
+            font-size: 45px;
+            margin-right: 12px;
+        }
+
+        /* ==============================
+           SUMMARY CARDS
+        ============================== */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 22px;
+            border-radius: 13px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+            border-left: 5px solid #43a047;
+        }
+
+        .summary-card h4 {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .summary-card .value {
+            font-size: 27px;
+            font-weight: bold;
+            color: #1b5e20;
+        }
+
+        /* ==============================
+           TABLE SECTION
+        ============================== */
+
+        .table-section {
+            background: white;
+            padding: 22px;
+            border-radius: 14px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .table-section h3 {
+            color: #1b5e20;
+            margin-bottom: 18px;
+            font-size: 20px;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        th {
+            background: #2e7d32;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 11px;
+            border-bottom: 1px solid #e5e5e5;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f5faf5;
+        }
+
+        /* ==============================
+           EMPTY MESSAGE
+        ============================== */
+
+        .empty {
+            text-align: center;
+            padding: 20px;
+            color: #888;
+        }
+
+        /* ==============================
+           FOOTER
+        ============================== */
+
+        .footer {
+            text-align: center;
+            padding: 25px;
+            color: #777;
+            font-size: 13px;
+        }
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
+        @media (max-width: 1000px) {
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .header {
+                padding: 18px;
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .header-left h1 {
+                font-size: 22px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .download-buttons {
+                flex-direction: column;
+            }
+
+            .download-btn {
+                text-align: center;
+                width: 100%;
+            }
+
+            .weather-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .weather-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+    <!-- ==============================
+         HEADER
+    ============================== -->
+
+    <header class="header">
+
+        <div class="header-left">
+
+            <h1>📊 Farm Reports</h1>
+
+            <p>
+                Digital Farm Record System
+            </p>
+
+        </div>
+
+        <a href="/dashboard" class="back-btn">
+            ← Back to Dashboard
+        </a>
+
+    </header>
+
+
+    <!-- ==============================
+         MAIN
+    ============================== -->
+
+    <main class="container">
+
+
+        <!-- REPORT INTRODUCTION -->
+
+        <section class="report-heading">
+
+            <h2>🌱 Complete Farm Report</h2>
+
+            <p>
+                View your farm records and download the complete report
+                in PDF or Excel format.
+            </p>
+
+        </section>
+
+
+        <!-- ==============================
+             DOWNLOAD SECTION
+        ============================== -->
+
+        <section class="download-section">
+
+            <h3>📥 Download Farm Report</h3>
+
+            <p>
+                Download all your farm information from the Reports section.
+                The PDF and Excel files are generated from your MySQL records.
+            </p>
+
+            <div class="download-buttons">
+
+                <!-- PDF -->
+
+                <a
+                    href="{{ url_for('download_pdf') }}"
+                    class="download-btn pdf-btn"
+                >
+                    📄 Download PDF
+                </a>
+
+
+                <!-- EXCEL -->
+
+                <a
+                    href="{{ url_for('download_excel') }}"
+                    class="download-btn excel-btn"
+                >
+                    📊 Download Excel
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==============================
+             WEATHER CHECKING
+        ============================== -->
+
+        <section class="weather-section">
+
+            <div class="weather-content">
+
+                <div class="weather-text">
+
+                    <h3>
+                        <span class="weather-icon">🌤️</span>
+                        Weather Checking
+                    </h3>
+
+                    <p>
+                        Check the current weather of any city or place.
+                        Enter a location to view temperature, humidity,
+                        wind speed, pressure and other weather information.
+                    </p>
+
+                </div>
+
+                <a href="/weather" class="weather-btn">
+                    🌦️ Check Weather
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==============================
+             SUMMARY
+        ============================== -->
+
+        <section class="summary-grid">
+
+
+            <div class="summary-card">
+
+                <h4>🌾 Total Crops</h4>
+
+                <div class="value">
+                    {{ total_crops }}
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <h4>🏞️ Total Land</h4>
+
+                <div class="value">
+                    {{ total_land }}
+                </div>
+
+                <small>Acres</small>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <h4>💰 Total Income</h4>
+
+                <div class="value">
+                    ₹{{ total_income }}
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <h4>💸 Total Expenses</h4>
+
+                <div class="value">
+                    ₹{{ total_expenses }}
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- ==============================
+             CROP REPORT
+        ============================== -->
+
+        <section class="table-section">
+
+            <h3>🌱 Crop Records</h3>
+
+            <div class="table-wrapper">
+
+                {% if crops %}
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+                            <th>Crop Name</th>
+                            <th>Season</th>
+                            <th>Area</th>
+                            <th>Sowing Date</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for crop in crops %}
+
+                        <tr>
+
+                            <td>
+                                {{ crop.id }}
+                            </td>
+
+                            <td>
+                                {{ crop.crop_name }}
+                            </td>
+
+                            <td>
+                                {{ crop.season }}
+                            </td>
+
+                            <td>
+                                {{ crop.area }}
+                            </td>
+
+                            <td>
+                                {{ crop.sowing_date }}
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+                {% else %}
+
+                <div class="empty">
+                    No crop records available.
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <!-- ==============================
+             LAND REPORT
+        ============================== -->
+
+        <section class="table-section">
+
+            <h3>🏞️ Land Records</h3>
+
+            <div class="table-wrapper">
+
+                {% if land_records %}
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+                            <th>Land Name</th>
+                            <th>Area</th>
+                            <th>Soil Type</th>
+                            <th>Location</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for land in land_records %}
+
+                        <tr>
+
+                            <td>
+                                {{ land.id }}
+                            </td>
+
+                            <td>
+                                {{ land.land_name }}
+                            </td>
+
+                            <td>
+                                {{ land.area }}
+                            </td>
+
+                            <td>
+                                {{ land.soil_type }}
+                            </td>
+
+                            <td>
+                                {{ land.location }}
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+                {% else %}
+
+                <div class="empty">
+                    No land records available.
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <!-- ==============================
+             FERTILIZER REPORT
+        ============================== -->
+
+        <section class="table-section">
+
+            <h3>🧪 Fertilizer Records</h3>
+
+            <div class="table-wrapper">
+
+                {% if fertilizers %}
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+                            <th>Fertilizer Name</th>
+                            <th>Quantity</th>
+                            <th>Cost</th>
+                            <th>Date</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for fertilizer in fertilizers %}
+
+                        <tr>
+
+                            <td>
+                                {{ fertilizer.id }}
+                            </td>
+
+                            <td>
+                                {{ fertilizer.fertilizer_name }}
+                            </td>
+
+                            <td>
+                                {{ fertilizer.quantity }}
+                            </td>
+
+                            <td>
+                                ₹{{ fertilizer.cost }}
+                            </td>
+
+                            <td>
+                                {{ fertilizer.date }}
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+                {% else %}
+
+                <div class="empty">
+                    No fertilizer records available.
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <!-- ==============================
+             IRRIGATION REPORT
+        ============================== -->
+
+        <section class="table-section">
+
+            <h3>💧 Irrigation Records</h3>
+
+            <div class="table-wrapper">
+
+                {% if irrigations %}
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+                            <th>Water Source</th>
+                            <th>Method</th>
+                            <th>Date</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for irrigation in irrigations %}
+
+                        <tr>
+
+                            <td>
+                                {{ irrigation.id }}
+                            </td>
+
+                            <td>
+                                {{ irrigation.water_source }}
+                            </td>
+
+                            <td>
+                                {{ irrigation.method }}
+                            </td>
+
+                            <td>
+                                {{ irrigation.date }}
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+                {% else %}
+
+                <div class="empty">
+                    No irrigation records available.
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <!-- ==============================
+             EXPENSE REPORT
+        ============================== -->
+
+        <section class="table-section">
+
+            <h3>💸 Expense Records</h3>
+
+            <div class="table-wrapper">
+
+                {% if expenses %}
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+                            <th>Expense Type</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for expense in expenses %}
+
+                        <tr>
+
+                            <td>
+                                {{ expense.id }}
+                            </td>
+
+                            <td>
+                                {{ expense.expense_type }}
+                            </td>
+
+                            <td>
+                                ₹{{ expense.amount }}
+                            </td>
+
+                            <td>
+                                {{ expense.date }}
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+                {% else %}
+
+                <div class="empty">
+                    No expense records available.
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <!-- ==============================
+             INCOME REPORT
+        ============================== -->
+
+        <section class="table-section">
+
+            <h3>💰 Income Records</h3>
+
+            <div class="table-wrapper">
+
+                {% if incomes %}
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+                            <th>Income Source</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for income in incomes %}
+
+                        <tr>
+
+                            <td>
+                                {{ income.id }}
+                            </td>
+
+                            <td>
+                                {{ income.income_source }}
+                            </td>
+
+                            <td>
+                                ₹{{ income.amount }}
+                            </td>
+
+                            <td>
+                                {{ income.date }}
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+                {% else %}
+
+                <div class="empty">
+                    No income records available.
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <!-- ==============================
+             HARVEST REPORT
+        ============================== -->
+
+        <section class="table-section">
+
+            <h3>🌾 Harvest Records</h3>
+
+            <div class="table-wrapper">
+
+                {% if harvest %}
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+                            <th>Crop Name</th>
+                            <th>Harvest Date</th>
+                            <th>Yield Quantity</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for item in harvest %}
+
+                        <tr>
+
+                            <td>
+                                {{ item.id }}
+                            </td>
+
+                            <td>
+                                {{ item.crop_name }}
+                            </td>
+
+                            <td>
+                                {{ item.harvest_date }}
+                            </td>
+
+                            <td>
+                                {{ item.yield_quantity }}
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+                {% else %}
+
+                <div class="empty">
+                    No harvest records available.
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- ==============================
+         FOOTER
+    ============================== -->
+
+    <footer class="footer">
+
+        Digital Farm Record System © 2026
+
+    </footer>
+
+
+</body>
+</html>

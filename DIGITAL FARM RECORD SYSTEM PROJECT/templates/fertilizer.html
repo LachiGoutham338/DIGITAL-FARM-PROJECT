@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Fertilizer Record</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f8f3;
+        }
+
+        /* TOP BAR */
+
+        .topbar {
+            background: #1b5e20;
+            color: white;
+            padding: 18px 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar h2 {
+            margin: 0;
+        }
+
+        .dashboard-btn {
+            color: white;
+            text-decoration: none;
+            background: #388e3c;
+            padding: 10px 18px;
+            border-radius: 7px;
+        }
+
+        .dashboard-btn:hover {
+            background: #2e7d32;
+        }
+
+
+        /* MAIN CONTAINER */
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+
+        /* FORM CARD */
+
+        .form-card {
+            background: white;
+
+            width: 100%;
+            max-width: 550px;
+
+            margin: auto;
+
+            padding: 30px;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 6px 25px rgba(0,0,0,0.12);
+        }
+
+
+        /* TITLE */
+
+        .form-card h1 {
+            text-align: center;
+
+            color: #1b5e20;
+
+            margin-top: 0;
+
+            margin-bottom: 28px;
+        }
+
+
+        /* LABEL */
+
+        label {
+            display: block;
+
+            font-weight: bold;
+
+            color: #333;
+
+            margin-top: 18px;
+
+            margin-bottom: 7px;
+        }
+
+
+        /* INPUT */
+
+        input,
+        select {
+
+            width: 100%;
+
+            padding: 13px;
+
+            box-sizing: border-box;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            background: white;
+        }
+
+
+        input:focus,
+        select:focus {
+
+            outline: none;
+
+            border: 2px solid #43a047;
+
+            box-shadow:
+                0 0 5px rgba(67,160,71,0.2);
+        }
+
+
+        /* INPUT WITH KG */
+
+        .quantity-box {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .quantity-box input {
+
+            flex: 1;
+        }
+
+        .unit {
+
+            font-weight: bold;
+
+            color: #555;
+
+            font-size: 16px;
+        }
+
+
+        /* COST */
+
+        .cost-box {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+        }
+
+        .rupee {
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+            color: #1b5e20;
+        }
+
+        .cost-box input {
+
+            flex: 1;
+        }
+
+
+        /* SAVE BUTTON */
+
+        .save-btn {
+
+            width: 100%;
+
+            margin-top: 28px;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #2e7d32;
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+
+            background: #1b5e20;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* SAVED RECORDS */
+
+        .records {
+
+            margin-top: 35px;
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 4px 18px rgba(0,0,0,0.08);
+        }
+
+        .records h2 {
+
+            color: #1b5e20;
+
+            margin-top: 0;
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+
+            padding: 12px;
+
+            border-bottom: 1px solid #ddd;
+
+            text-align: left;
+        }
+
+        th {
+
+            background: #e8f5e9;
+
+            color: #1b5e20;
+        }
+
+        tr:hover {
+
+            background: #f5faf5;
+        }
+
+
+        .empty {
+
+            text-align: center;
+
+            color: #777;
+
+            padding: 20px;
+        }
+
+
+        /* MOBILE */
+
+        @media(max-width: 600px) {
+
+            .topbar {
+
+                padding: 15px;
+
+            }
+
+            .topbar h2 {
+
+                font-size: 17px;
+
+            }
+
+            .container {
+
+                width: 94%;
+
+            }
+
+            .form-card {
+
+                padding: 22px;
+
+            }
+
+            table {
+
+                font-size: 13px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ========================= -->
+<!-- TOP BAR -->
+<!-- ========================= -->
+
+<div class="topbar">
+
+    <h2>🌾 Digital Farm Record System</h2>
+
+    <a href="/dashboard"
+       class="dashboard-btn">
+
+        ← Dashboard
+
+    </a>
+
+</div>
+
+
+
+<!-- ========================= -->
+<!-- MAIN -->
+<!-- ========================= -->
+
+<div class="container">
+
+
+    <!-- ========================= -->
+    <!-- FERTILIZER FORM -->
+    <!-- ========================= -->
+
+    <div class="form-card">
+
+        <h1>
+            🌿 FERTILIZER RECORD
+        </h1>
+
+
+        <form method="POST"
+              action="{{ url_for('fertilizer') }}">
+
+
+            <!-- FERTILIZER NAME -->
+
+            <label>
+                Fertilizer Name
+            </label>
+
+            <select name="fertilizer_name"
+                    required>
+
+                <option value="">
+                    Select fertilizer ▼
+                </option>
+
+                <option value="Urea">
+                    Urea
+                </option>
+
+                <option value="DAP">
+                    DAP
+                </option>
+
+                <option value="NPK">
+                    NPK
+                </option>
+
+                <option value="Potash">
+                    Potash
+                </option>
+
+                <option value="Vermicompost">
+                    Vermicompost
+                </option>
+
+                <option value="Compost">
+                    Compost
+                </option>
+
+                <option value="Organic Fertilizer">
+                    Organic Fertilizer
+                </option>
+
+                <option value="Other">
+                    Other
+                </option>
+
+            </select>
+
+
+
+            <!-- QUANTITY -->
+
+            <label>
+                Quantity
+            </label>
+
+            <div class="quantity-box">
+
+                <input
+                    type="number"
+                    name="quantity"
+                    min="0"
+                    step="0.01"
+                    placeholder="Enter quantity"
+                    required
+                >
+
+                <span class="unit">
+                    kg
+                </span>
+
+            </div>
+
+
+
+            <!-- COST -->
+
+            <label>
+                Cost
+            </label>
+
+            <div class="cost-box">
+
+                <span class="rupee">
+                    ₹
+                </span>
+
+                <input
+                    type="number"
+                    name="cost"
+                    min="0"
+                    step="0.01"
+                    placeholder="Enter fertilizer cost"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- DATE -->
+
+            <label>
+                Application Date
+            </label>
+
+            <input
+                type="date"
+                name="date"
+                required
+            >
+
+
+
+            <!-- SAVE -->
+
+            <button
+                type="submit"
+                class="save-btn">
+
+                💾 Save Fertilizer
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+
+    <!-- ========================= -->
+    <!-- SAVED RECORDS -->
+    <!-- ========================= -->
+
+    <div class="records">
+
+        <h2>
+            📋 Saved Fertilizer Records
+        </h2>
+
+
+        {% if fertilizers %}
+
+
+        <table>
+
+            <tr>
+
+                <th>
+                    ID
+                </th>
+
+                <th>
+                    Fertilizer
+                </th>
+
+                <th>
+                    Quantity
+                </th>
+
+                <th>
+                    Cost
+                </th>
+
+                <th>
+                    Application Date
+                </th>
+
+            </tr>
+
+
+            {% for fertilizer in fertilizers %}
+
+
+            <tr>
+
+                <td>
+                    {{ fertilizer.id }}
+                </td>
+
+                <td>
+                    🌿 {{ fertilizer.fertilizer_name }}
+                </td>
+
+                <td>
+                    {{ fertilizer.quantity }} kg
+                </td>
+
+                <td>
+                    ₹{{ fertilizer.cost }}
+                </td>
+
+                <td>
+                    {{ fertilizer.date }}
+                </td>
+
+            </tr>
+
+
+            {% endfor %}
+
+
+        </table>
+
+
+        {% else %}
+
+
+        <div class="empty">
+
+            No fertilizer records added yet.
+
+        </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

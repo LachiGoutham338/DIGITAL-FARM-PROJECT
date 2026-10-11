@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Digital Farm Record System</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            color: #263238;
+
+            background: #f7faf7;
+        }
+
+
+        /* =====================================
+           NAVIGATION
+        ===================================== */
+
+        nav {
+
+            height: 75px;
+
+            background: rgba(255,255,255,0.97);
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 0 7%;
+
+            position: absolute;
+
+            width: 100%;
+
+            top: 0;
+
+            z-index: 10;
+
+            box-shadow:
+                0 2px 15px rgba(0,0,0,0.08);
+        }
+
+
+        .logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            color: #1b5e20;
+
+            font-size: 23px;
+
+            font-weight: bold;
+        }
+
+
+        .logo-icon {
+
+            width: 43px;
+
+            height: 43px;
+
+            background: #e8f5e9;
+
+            border-radius: 12px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 25px;
+        }
+
+
+        .nav-buttons {
+
+            display: flex;
+
+            gap: 12px;
+        }
+
+
+        .nav-login {
+
+            text-decoration: none;
+
+            color: #2e7d32;
+
+            font-weight: bold;
+
+            padding: 11px 20px;
+
+            border-radius: 8px;
+
+            transition: 0.3s;
+        }
+
+
+        .nav-login:hover {
+
+            background: #e8f5e9;
+        }
+
+
+        .nav-register {
+
+            text-decoration: none;
+
+            color: white;
+
+            background: #2e7d32;
+
+            font-weight: bold;
+
+            padding: 11px 20px;
+
+            border-radius: 8px;
+
+            transition: 0.3s;
+        }
+
+
+        .nav-register:hover {
+
+            background: #1b5e20;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================
+           HERO
+        ===================================== */
+
+        .hero {
+
+            min-height: 720px;
+
+            padding: 150px 7% 80px;
+
+            display: grid;
+
+            grid-template-columns: 1.1fr 0.9fr;
+
+            align-items: center;
+
+            gap: 50px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f1f8e9 0%,
+                    #e8f5e9 50%,
+                    #ffffff 100%
+                );
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        .hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 500px;
+
+            height: 500px;
+
+            background: #c8e6c9;
+
+            border-radius: 50%;
+
+            right: -180px;
+
+            top: -180px;
+
+            opacity: 0.35;
+        }
+
+
+        .hero-text {
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .badge {
+
+            display: inline-block;
+
+            background: #e8f5e9;
+
+            color: #2e7d32;
+
+            padding: 9px 16px;
+
+            border-radius: 30px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            margin-bottom: 20px;
+
+            border: 1px solid #c8e6c9;
+        }
+
+
+        .hero h1 {
+
+            font-size: 58px;
+
+            line-height: 1.08;
+
+            color: #173b1c;
+
+            margin-bottom: 22px;
+        }
+
+
+        .hero h1 span {
+
+            color: #2e7d32;
+        }
+
+
+        .hero-description {
+
+            font-size: 18px;
+
+            line-height: 1.7;
+
+            color: #607d65;
+
+            max-width: 600px;
+
+            margin-bottom: 32px;
+        }
+
+
+        .hero-buttons {
+
+            display: flex;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .primary-btn {
+
+            text-decoration: none;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2e7d32,
+                    #43a047
+                );
+
+            color: white;
+
+            padding: 15px 27px;
+
+            border-radius: 10px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            box-shadow:
+                0 8px 20px rgba(46,125,50,0.25);
+
+            transition: 0.3s;
+        }
+
+
+        .primary-btn:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 12px 25px rgba(46,125,50,0.35);
+        }
+
+
+        .secondary-btn {
+
+            text-decoration: none;
+
+            color: #2e7d32;
+
+            background: white;
+
+            border: 1px solid #b7cbb9;
+
+            padding: 15px 27px;
+
+            border-radius: 10px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+
+        .secondary-btn:hover {
+
+            border-color: #2e7d32;
+
+            background: #f1f8e9;
+        }
+
+
+        /* =====================================
+           DASHBOARD PREVIEW
+        ===================================== */
+
+        .preview-area {
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .dashboard-preview {
+
+            background: white;
+
+            border-radius: 22px;
+
+            padding: 22px;
+
+            box-shadow:
+                0 25px 60px rgba(46,125,50,0.18);
+
+            border: 1px solid #e0e8e0;
+
+            transform: rotate(1deg);
+
+            transition: 0.4s;
+        }
+
+
+        .dashboard-preview:hover {
+
+            transform:
+                rotate(0deg)
+                translateY(-5px);
+        }
+
+
+        .preview-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+
+        .preview-title {
+
+            font-size: 19px;
+
+            font-weight: bold;
+
+            color: #1b5e20;
+        }
+
+
+        .online {
+
+            background: #e8f5e9;
+
+            color: #2e7d32;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+
+            font-weight: bold;
+        }
+
+
+        .stat-grid {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 12px;
+        }
+
+
+        .stat {
+
+            padding: 17px;
+
+            border-radius: 13px;
+
+            background: #f7faf7;
+        }
+
+
+        .stat-icon {
+
+            font-size: 24px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .stat-name {
+
+            color: #789078;
+
+            font-size: 12px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .stat-value {
+
+            color: #1b5e20;
+
+            font-size: 21px;
+
+            font-weight: bold;
+        }
+
+
+        .chart {
+
+            margin-top: 15px;
+
+            padding: 18px;
+
+            background: #f1f8e9;
+
+            border-radius: 13px;
+        }
+
+
+        .chart-title {
+
+            color: #33691e;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            margin-bottom: 14px;
+        }
+
+
+        .bars {
+
+            height: 100px;
+
+            display: flex;
+
+            align-items: flex-end;
+
+            justify-content: space-around;
+
+            gap: 8px;
+        }
+
+
+        .bar {
+
+            width: 13%;
+
+            border-radius: 6px 6px 0 0;
+
+            background:
+                linear-gradient(
+                    to top,
+                    #2e7d32,
+                    #81c784
+                );
+        }
+
+
+        .bar1 { height: 45%; }
+        .bar2 { height: 65%; }
+        .bar3 { height: 52%; }
+        .bar4 { height: 80%; }
+        .bar5 { height: 70%; }
+        .bar6 { height: 92%; }
+
+
+        /* =====================================
+           TRUST
+        ===================================== */
+
+        .trust {
+
+            padding: 22px 7%;
+
+            background: #1b5e20;
+
+            color: white;
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 55px;
+
+            flex-wrap: wrap;
+
+            text-align: center;
+        }
+
+
+        .trust-item strong {
+
+            display: block;
+
+            font-size: 23px;
+
+            margin-bottom: 3px;
+        }
+
+
+        .trust-item span {
+
+            font-size: 12px;
+
+            color: #c8e6c9;
+        }
+
+
+        /* =====================================
+           FEATURES
+        ===================================== */
+
+        .features-section {
+
+            padding: 85px 7%;
+
+            background: white;
+
+            text-align: center;
+        }
+
+
+        .section-label {
+
+            color: #43a047;
+
+            font-weight: bold;
+
+            font-size: 13px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.5px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .features-section h2 {
+
+            font-size: 38px;
+
+            color: #173b1c;
+
+            margin-bottom: 12px;
+        }
+
+
+        .section-description {
+
+            color: #789078;
+
+            max-width: 650px;
+
+            margin: auto;
+
+            line-height: 1.6;
+        }
+
+
+        .feature-grid {
+
+            margin-top: 45px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+
+            text-align: left;
+        }
+
+
+        .feature-card {
+
+            padding: 27px;
+
+            border: 1px solid #e1e9e1;
+
+            border-radius: 16px;
+
+            background: white;
+
+            transition: 0.3s;
+        }
+
+
+        .feature-card:hover {
+
+            transform: translateY(-7px);
+
+            border-color: #a5d6a7;
+
+            box-shadow:
+                0 15px 35px rgba(46,125,50,0.10);
+        }
+
+
+        .feature-icon {
+
+            width: 55px;
+
+            height: 55px;
+
+            background: #e8f5e9;
+
+            border-radius: 14px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            font-size: 28px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .feature-card h3 {
+
+            color: #1b5e20;
+
+            margin-bottom: 9px;
+
+            font-size: 18px;
+        }
+
+
+        .feature-card p {
+
+            color: #789078;
+
+            line-height: 1.6;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================
+           CTA
+        ===================================== */
+
+        .cta {
+
+            margin: 0 7% 80px;
+
+            padding: 60px 50px;
+
+            border-radius: 25px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1b5e20,
+                    #43a047
+                );
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 30px;
+        }
+
+
+        .cta h2 {
+
+            font-size: 34px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .cta p {
+
+            color: #dcedc8;
+
+            line-height: 1.6;
+        }
+
+
+        .cta-btn {
+
+            background: white;
+
+            color: #1b5e20;
+
+            text-decoration: none;
+
+            padding: 15px 25px;
+
+            border-radius: 10px;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+
+        /* =====================================
+           FOOTER
+        ===================================== */
+
+        footer {
+
+            background: #102f16;
+
+            color: white;
+
+            padding: 35px 7%;
+
+            text-align: center;
+        }
+
+
+        footer .footer-logo {
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+
+        footer p {
+
+            color: #a5c7a8;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================
+           RESPONSIVE
+        ===================================== */
+
+        @media(max-width: 900px) {
+
+            .hero {
+
+                grid-template-columns: 1fr;
+
+                text-align: center;
+
+                padding-top: 130px;
+            }
+
+
+            .hero-description {
+
+                margin-left: auto;
+
+                margin-right: auto;
+            }
+
+
+            .hero-buttons {
+
+                justify-content: center;
+            }
+
+
+            .preview-area {
+
+                max-width: 600px;
+
+                width: 100%;
+
+                margin: auto;
+            }
+
+
+            .feature-grid {
+
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+
+            .cta {
+
+                flex-direction: column;
+
+                text-align: center;
+            }
+        }
+
+
+        @media(max-width: 600px) {
+
+            nav {
+
+                padding: 0 5%;
+
+                height: 68px;
+            }
+
+
+            .logo {
+
+                font-size: 17px;
+            }
+
+
+            .logo-icon {
+
+                width: 37px;
+
+                height: 37px;
+
+                font-size: 20px;
+            }
+
+
+            .nav-login {
+
+                display: none;
+            }
+
+
+            .nav-register {
+
+                padding: 9px 13px;
+
+                font-size: 13px;
+            }
+
+
+            .hero {
+
+                padding: 115px 5% 55px;
+
+                min-height: auto;
+            }
+
+
+            .hero h1 {
+
+                font-size: 40px;
+            }
+
+
+            .hero-description {
+
+                font-size: 15px;
+            }
+
+
+            .dashboard-preview {
+
+                padding: 15px;
+            }
+
+
+            .features-section {
+
+                padding: 60px 5%;
+            }
+
+
+            .features-section h2 {
+
+                font-size: 30px;
+            }
+
+
+            .feature-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .cta {
+
+                margin: 0 5% 55px;
+
+                padding: 40px 25px;
+            }
+
+
+            .cta h2 {
+
+                font-size: 28px;
+            }
+
+
+            .trust {
+
+                gap: 25px;
+
+                padding: 20px 5%;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     NAVIGATION
+========================================= -->
+
+<nav>
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            🌱
+        </div>
+
+        Digital Farm
+
+    </div>
+
+
+    <div class="nav-buttons">
+
+        <a
+            href="{{ url_for('login') }}"
+            class="nav-login">
+
+            Login
+
+        </a>
+
+
+        <a
+            href="{{ url_for('register') }}"
+            class="nav-register">
+
+            Get Started
+
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================================
+     HERO
+========================================= -->
+
+<section class="hero">
+
+
+    <div class="hero-text">
+
+        <div class="badge">
+
+            🌾 DIGITAL FARM RECORD SYSTEM
+
+        </div>
+
+
+        <h1>
+
+            Record Everything Digitally.<br>
+
+            <span>
+                Track Every Record Easily.
+            </span>
+
+            <br>
+
+            Grow Smarter.
+
+        </h1>
+
+
+        <p class="hero-description">
+
+            A modern digital platform designed to help
+            farmers manage crops, land, fertilizer,
+            irrigation, expenses, income and harvest
+            records — all in one place.
+
+        </p>
+
+
+        <div class="hero-buttons">
+
+            <a
+                href="{{ url_for('register') }}"
+                class="primary-btn">
+
+                🌱 Create Farmer Account →
+
+            </a>
+
+
+            <a
+                href="{{ url_for('login') }}"
+                class="secondary-btn">
+
+                🔐 Farmer Login
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+<!-- =========================================
+     TRUST BAR
+========================================= -->
+
+<div class="trust">
+
+
+    <div class="trust-item">
+
+        <strong>🌱</strong>
+
+        <span>
+            Crop Management
+        </span>
+
+    </div>
+
+
+    <div class="trust-item">
+
+        <strong>📊</strong>
+
+        <span>
+            Real-Time Dashboard
+        </span>
+
+    </div>
+
+
+    <div class="trust-item">
+
+        <strong>💰</strong>
+
+        <span>
+            Financial Tracking
+        </span>
+
+    </div>
+
+
+    <div class="trust-item">
+
+        <strong>📋</strong>
+
+        <span>
+            Digital Records
+        </span>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     FEATURES
+========================================= -->
+
+<section class="features-section">
+
+
+    <div class="section-label">
+        EVERYTHING IN ONE PLACE
+    </div>
+
+
+    <h2>
+        Complete Farm Management
+    </h2>
+
+
+    <p class="section-description">
+
+        Keep your important farm information
+        organized and easily accessible with
+        one simple digital system.
+
+    </p>
+
+
+    <div class="feature-grid">
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🌱
+            </div>
+
+            <h3>
+                Crop Management
+            </h3>
+
+            <p>
+                Record crop name, season,
+                cultivated area and sowing date
+                in an organized digital record.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🚜
+            </div>
+
+            <h3>
+                Land Management
+            </h3>
+
+            <p>
+                Store survey number, land area,
+                soil type and location details
+                for easy reference.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🌿
+            </div>
+
+            <h3>
+                Fertilizer Tracking
+            </h3>
+
+            <p>
+                Record fertilizer name,
+                quantity, application date and
+                cost used on the farm.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                💧
+            </div>
+
+            <h3>
+                Irrigation Records
+            </h3>
+
+            <p>
+                Track water sources, irrigation
+                methods and irrigation dates
+                throughout the season.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                💸
+            </div>
+
+            <h3>
+                Expense Management
+            </h3>
+
+            <p>
+                Record seeds, labour, fertilizer,
+                pesticides, transportation and
+                other farm expenses.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                📊
+            </div>
+
+            <h3>
+                Farm Reports
+            </h3>
+
+            <p>
+                View total crops, land, income,
+                expenses, harvest and profit
+                through an easy dashboard.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     CALL TO ACTION
+========================================= -->
+
+<section class="cta">
+
+
+    <div>
+
+        <h2>
+            Ready to Manage Your Farm Smarter?
+        </h2>
+
+        <p>
+            Create your farmer account and
+            start maintaining your farm records
+            digitally today.
+        </p>
+
+    </div>
+
+
+    <a
+        href="{{ url_for('register') }}"
+        class="cta-btn">
+
+        🌱 Get Started Free →
+
+    </a>
+
+</section>
+
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+
+<footer>
+
+    <div class="footer-logo">
+
+        🌱 Digital Farm Record System
+
+    </div>
+
+    <p>
+
+        Smart technology for modern farm management.
+
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

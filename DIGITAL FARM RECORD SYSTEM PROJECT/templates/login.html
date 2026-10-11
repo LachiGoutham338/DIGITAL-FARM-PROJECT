@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Farmer Login | Digital Farm</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(15, 90, 45, 0.95),
+                    rgba(67, 160, 71, 0.88)
+                );
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 25px;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 1050px;
+
+            min-height: 620px;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            background: white;
+
+            border-radius: 25px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 25px 60px rgba(0,0,0,0.25);
+        }
+
+        /* LEFT SIDE */
+
+        .welcome {
+            background:
+                linear-gradient(
+                    145deg,
+                    #174d2a,
+                    #2e7d32,
+                    #66bb6a
+                );
+
+            color: white;
+
+            padding: 60px 50px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo {
+            width: 75px;
+            height: 75px;
+
+            background: rgba(255,255,255,0.18);
+
+            border-radius: 50%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 42px;
+
+            margin-bottom: 25px;
+        }
+
+        .welcome h1 {
+            font-size: 42px;
+            line-height: 1.15;
+
+            margin-bottom: 18px;
+        }
+
+        .welcome p {
+            font-size: 17px;
+            line-height: 1.7;
+
+            color: #e8f5e9;
+
+            max-width: 430px;
+        }
+
+        .features {
+            margin-top: 35px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+
+            margin-bottom: 18px;
+
+            font-size: 15px;
+        }
+
+        .feature-icon {
+            width: 38px;
+            height: 38px;
+
+            background: rgba(255,255,255,0.16);
+
+            border-radius: 10px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            margin-right: 12px;
+        }
+
+        /* RIGHT SIDE */
+
+        .login-section {
+            padding: 55px 55px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-section h2 {
+            font-size: 31px;
+            color: #1b5e20;
+
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #777;
+
+            margin-bottom: 30px;
+
+            font-size: 15px;
+        }
+
+        .message {
+            padding: 12px 15px;
+
+            background: #ffebee;
+
+            color: #c62828;
+
+            border-radius: 9px;
+
+            margin-bottom: 20px;
+
+            font-size: 14px;
+        }
+
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            color: #333;
+
+            margin-bottom: 8px;
+        }
+
+        .input-box {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+
+            left: 14px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            font-size: 18px;
+        }
+
+        .input-box input {
+            width: 100%;
+
+            padding: 14px 45px;
+
+            border: 1px solid #d7ddd8;
+
+            border-radius: 10px;
+
+            font-size: 15px;
+
+            outline: none;
+
+            transition: 0.3s;
+        }
+
+        .input-box input:focus {
+            border-color: #43a047;
+
+            box-shadow:
+                0 0 0 3px rgba(67,160,71,0.12);
+        }
+
+        .login-btn {
+            width: 100%;
+
+            padding: 15px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #2e7d32,
+                    #43a047
+                );
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            margin-top: 5px;
+
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 20px rgba(46,125,50,0.25);
+        }
+
+        .register {
+            text-align: center;
+
+            margin-top: 25px;
+
+            color: #777;
+
+            font-size: 14px;
+        }
+
+        .register a {
+            color: #2e7d32;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+        .register a:hover {
+            text-decoration: underline;
+        }
+
+        .security {
+            text-align: center;
+
+            margin-top: 25px;
+
+            color: #999;
+
+            font-size: 12px;
+        }
+
+        /* MOBILE */
+
+        @media(max-width: 800px) {
+
+            .page {
+                grid-template-columns: 1fr;
+
+                max-width: 500px;
+            }
+
+            .welcome {
+                padding: 35px;
+
+                text-align: center;
+            }
+
+            .logo {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .welcome h1 {
+                font-size: 32px;
+            }
+
+            .welcome p {
+                margin: auto;
+            }
+
+            .features {
+                display: none;
+            }
+
+            .login-section {
+                padding: 40px 30px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- LEFT -->
+
+    <div class="welcome">
+
+        <div class="logo">
+            🌱
+        </div>
+
+        <h1>
+            Welcome Back,<br>
+            Farmer!
+        </h1>
+
+        <p>
+            Manage your farm records smarter.
+            Track crops, land, fertilizer,
+            irrigation, expenses, income and
+            harvest — all in one place.
+        </p>
+
+        <div class="features">
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    🌾
+                </div>
+
+                <span>
+                    Manage your crop records
+                </span>
+
+            </div>
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    📊
+                </div>
+
+                <span>
+                    View real-time farm reports
+                </span>
+
+            </div>
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    💰
+                </div>
+
+                <span>
+                    Track income, expenses and profit
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RIGHT -->
+
+    <div class="login-section">
+
+        <h2>
+            Farmer Login
+        </h2>
+
+        <p class="subtitle">
+            Sign in to access your digital farm dashboard.
+        </p>
+
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="message
+                        {% if category == 'success' %}
+                            success
+                        {% endif %}">
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <form method="POST"
+              action="{{ url_for('login') }}">
+
+
+            <div class="input-group">
+
+                <label>
+                    Email Address
+                </label>
+
+                <div class="input-box">
+
+                    <span class="input-icon">
+                        ✉️
+                    </span>
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Password
+                </label>
+
+                <div class="input-box">
+
+                    <span class="input-icon">
+                        🔒
+                    </span>
+
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="login-btn">
+
+                🔐 Login to Farm Dashboard
+
+            </button>
+
+        </form>
+
+
+        <div class="register">
+
+            Don't have an account?
+
+            <a href="{{ url_for('register') }}">
+                Create Farmer Account
+            </a>
+
+        </div>
+
+
+        <div class="security">
+            🔒 Your farm records are securely managed
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

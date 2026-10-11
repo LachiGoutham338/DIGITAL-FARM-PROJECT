@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Land Details</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f8e9;
+        }
+
+        /* TOP BAR */
+
+        .topbar {
+            background: #33691e;
+            color: white;
+            padding: 18px 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar h2 {
+            margin: 0;
+        }
+
+        .dashboard-btn {
+            color: white;
+            text-decoration: none;
+            background: #558b2f;
+            padding: 10px 18px;
+            border-radius: 7px;
+        }
+
+        .dashboard-btn:hover {
+            background: #437522;
+        }
+
+
+        /* MAIN */
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 35px auto;
+        }
+
+
+        /* FORM CARD */
+
+        .form-card {
+            background: white;
+
+            width: 100%;
+            max-width: 550px;
+
+            margin: auto;
+
+            padding: 30px;
+
+            border-radius: 18px;
+
+            box-shadow: 0 6px 25px rgba(0,0,0,0.12);
+        }
+
+
+        /* TITLE */
+
+        .form-card h1 {
+            text-align: center;
+
+            color: #33691e;
+
+            margin-top: 0;
+
+            margin-bottom: 28px;
+        }
+
+
+        /* LABEL */
+
+        label {
+            display: block;
+
+            font-weight: bold;
+
+            color: #333;
+
+            margin-top: 18px;
+
+            margin-bottom: 7px;
+        }
+
+
+        /* INPUT */
+
+        input {
+            width: 100%;
+
+            padding: 13px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            background: white;
+        }
+
+
+        input:focus {
+            outline: none;
+
+            border: 2px solid #558b2f;
+
+            box-shadow: 0 0 5px rgba(85,139,47,0.2);
+        }
+
+
+        /* SAVE BUTTON */
+
+        .save-btn {
+            width: 100%;
+
+            margin-top: 28px;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #558b2f;
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            background: #33691e;
+        }
+
+
+        /* RECORDS */
+
+        .records {
+            margin-top: 35px;
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        }
+
+        .records h2 {
+            color: #33691e;
+
+            margin-top: 0;
+        }
+
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+
+            border-bottom: 1px solid #ddd;
+
+            text-align: left;
+        }
+
+        th {
+            background: #e8f5e9;
+
+            color: #33691e;
+        }
+
+        tr:hover {
+            background: #f7fbf4;
+        }
+
+
+        .empty {
+            text-align: center;
+
+            color: #777;
+
+            padding: 20px;
+        }
+
+
+        /* MESSAGE */
+
+        .message {
+            max-width: 550px;
+
+            margin: 0 auto 20px auto;
+
+            padding: 12px;
+
+            background: #dff0d8;
+
+            color: #33691e;
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            font-weight: bold;
+        }
+
+
+        /* MOBILE */
+
+        @media(max-width: 600px) {
+
+            .topbar {
+                padding: 15px;
+            }
+
+            .topbar h2 {
+                font-size: 17px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .form-card {
+                padding: 22px;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================================================= -->
+<!-- TOP BAR -->
+<!-- ================================================= -->
+
+<div class="topbar">
+
+    <h2>🌾 Digital Farm Record System</h2>
+
+    <a href="{{ url_for('dashboard') }}"
+       class="dashboard-btn">
+
+        ← Dashboard
+
+    </a>
+
+</div>
+
+
+
+<div class="container">
+
+
+    <!-- ================================================= -->
+    <!-- FLASH MESSAGE -->
+    <!-- ================================================= -->
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            {% for category, message in messages %}
+
+                <div class="message">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+
+    <!-- ================================================= -->
+    <!-- LAND FORM -->
+    <!-- ================================================= -->
+
+    <div class="form-card">
+
+        <h1>
+            🚜 LAND DETAILS
+        </h1>
+
+
+        <form method="POST"
+              action="{{ url_for('land') }}">
+
+
+            <!-- ================================================= -->
+            <!-- SURVEY NUMBER -->
+            <!-- ================================================= -->
+
+            <label>
+                Survey Number
+            </label>
+
+            <input
+                type="text"
+                name="survey_no"
+                placeholder="Enter survey number"
+                required
+            >
+
+
+
+            <!-- ================================================= -->
+            <!-- AREA -->
+            <!-- ================================================= -->
+
+            <label>
+                Area (Acres)
+            </label>
+
+            <input
+                type="number"
+                name="area"
+                min="0"
+                step="0.01"
+                placeholder="Enter area in acres"
+                required
+            >
+
+
+
+            <!-- ================================================= -->
+            <!-- SOIL TYPE -->
+            <!-- ================================================= -->
+
+            <label>
+                Soil Type
+            </label>
+
+            <input
+                type="text"
+                name="soil_type"
+                list="soilList"
+                placeholder="🔍 Select or type soil type..."
+                autocomplete="off"
+                required
+            >
+
+            <datalist id="soilList">
+
+                <option value="Black Soil">
+
+                <option value="Red Soil">
+
+                <option value="Loamy Soil">
+
+                <option value="Sandy Soil">
+
+                <option value="Clay Soil">
+
+                <option value="Alluvial Soil">
+
+                <option value="Laterite Soil">
+
+                <option value="Peaty Soil">
+
+                <option value="Saline Soil">
+
+                <option value="Other">
+
+            </datalist>
+
+
+
+            <!-- ================================================= -->
+            <!-- LOCATION -->
+            <!-- ================================================= -->
+
+            <label>
+                Location
+            </label>
+
+            <input
+                type="text"
+                name="location"
+                placeholder="Enter location"
+                required
+            >
+
+
+
+            <!-- ================================================= -->
+            <!-- SAVE BUTTON -->
+            <!-- ================================================= -->
+
+            <button
+                type="submit"
+                class="save-btn">
+
+                💾 Save Land
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+
+    <!-- ================================================= -->
+    <!-- SAVED LAND RECORDS -->
+    <!-- ================================================= -->
+
+    <div class="records">
+
+        <h2>
+            📋 Saved Land Records
+        </h2>
+
+
+        {% if lands %}
+
+
+        <table>
+
+            <tr>
+
+                <th>
+                    ID
+                </th>
+
+                <th>
+                    Survey Number
+                </th>
+
+                <th>
+                    Area
+                </th>
+
+                <th>
+                    Soil Type
+                </th>
+
+                <th>
+                    Location
+                </th>
+
+            </tr>
+
+
+            {% for land in lands %}
+
+
+            <tr>
+
+                <td>
+                    {{ land.id }}
+                </td>
+
+                <td>
+                    🚜 {{ land.survey_no }}
+                </td>
+
+                <td>
+                    {{ land.area }} Acres
+                </td>
+
+                <td>
+                    🌱 {{ land.soil_type }}
+                </td>
+
+                <td>
+                    📍 {{ land.location }}
+                </td>
+
+            </tr>
+
+
+            {% endfor %}
+
+
+        </table>
+
+
+        {% else %}
+
+
+        <div class="empty">
+
+            No land records added yet.
+
+        </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

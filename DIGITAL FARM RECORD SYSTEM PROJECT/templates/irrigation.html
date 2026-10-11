@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Irrigation Record</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #eef8ff;
+        }
+
+        /* TOP BAR */
+
+        .topbar {
+            background: #00695c;
+            color: white;
+            padding: 18px 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar h2 {
+            margin: 0;
+        }
+
+        .dashboard-btn {
+            color: white;
+            text-decoration: none;
+            background: #00897b;
+            padding: 10px 18px;
+            border-radius: 7px;
+        }
+
+        .dashboard-btn:hover {
+            background: #00796b;
+        }
+
+
+        /* MAIN CONTAINER */
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 35px auto;
+        }
+
+
+        /* FORM CARD */
+
+        .form-card {
+            background: white;
+
+            width: 100%;
+            max-width: 550px;
+
+            margin: auto;
+
+            padding: 30px;
+
+            border-radius: 18px;
+
+            box-shadow: 0 6px 25px rgba(0,0,0,0.12);
+        }
+
+
+        /* TITLE */
+
+        .form-card h1 {
+            text-align: center;
+
+            color: #00695c;
+
+            margin-top: 0;
+
+            margin-bottom: 28px;
+        }
+
+
+        /* LABEL */
+
+        label {
+            display: block;
+
+            font-weight: bold;
+
+            color: #333;
+
+            margin-top: 18px;
+
+            margin-bottom: 7px;
+        }
+
+
+        /* INPUT */
+
+        input {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            background: white;
+        }
+
+
+        input:focus {
+
+            outline: none;
+
+            border: 2px solid #00897b;
+
+            box-shadow: 0 0 5px rgba(0,137,123,0.2);
+        }
+
+
+        /* SAVE BUTTON */
+
+        .save-btn {
+
+            width: 100%;
+
+            margin-top: 28px;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #00897b;
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+
+            background: #00695c;
+        }
+
+
+        /* SAVED RECORDS */
+
+        .records {
+
+            margin-top: 35px;
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        }
+
+        .records h2 {
+
+            color: #00695c;
+
+            margin-top: 0;
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+
+            padding: 12px;
+
+            border-bottom: 1px solid #ddd;
+
+            text-align: left;
+        }
+
+        th {
+
+            background: #e0f2f1;
+
+            color: #00695c;
+        }
+
+        tr:hover {
+
+            background: #f5ffff;
+        }
+
+
+        .empty {
+
+            text-align: center;
+
+            color: #777;
+
+            padding: 20px;
+        }
+
+
+        /* SUCCESS MESSAGE */
+
+        .message {
+
+            max-width: 550px;
+
+            margin: 0 auto 20px auto;
+
+            padding: 12px;
+
+            background: #dff0d8;
+
+            color: #00695c;
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            font-weight: bold;
+        }
+
+
+        /* MOBILE */
+
+        @media(max-width: 600px) {
+
+            .topbar {
+                padding: 15px;
+            }
+
+            .topbar h2 {
+                font-size: 17px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .form-card {
+                padding: 22px;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================================================== -->
+<!-- TOP BAR -->
+<!-- ================================================== -->
+
+<div class="topbar">
+
+    <h2>🌾 Digital Farm Record System</h2>
+
+    <a href="{{ url_for('dashboard') }}"
+       class="dashboard-btn">
+
+        ← Dashboard
+
+    </a>
+
+</div>
+
+
+
+<div class="container">
+
+
+    <!-- ================================================== -->
+    <!-- SUCCESS MESSAGE -->
+    <!-- ================================================== -->
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            {% for category, message in messages %}
+
+                <div class="message">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+
+    <!-- ================================================== -->
+    <!-- IRRIGATION FORM -->
+    <!-- ================================================== -->
+
+    <div class="form-card">
+
+        <h1>
+            💧 IRRIGATION RECORD
+        </h1>
+
+
+        <form method="POST"
+              action="{{ url_for('irrigation') }}">
+
+
+            <!-- ================================================== -->
+            <!-- WATER SOURCE -->
+            <!-- ================================================== -->
+
+            <label>
+                Water Source
+            </label>
+
+            <input
+                type="text"
+                name="water_source"
+                list="waterSourceList"
+                placeholder="🔍 Select or type water source..."
+                autocomplete="off"
+                required
+            >
+
+            <datalist id="waterSourceList">
+
+                <option value="Borewell">
+
+                <option value="Well">
+
+                <option value="Canal">
+
+                <option value="Rainwater">
+
+                <option value="River">
+
+                <option value="Pond">
+
+                <option value="Lake">
+
+                <option value="Reservoir">
+
+                <option value="Other">
+
+            </datalist>
+
+
+
+            <!-- ================================================== -->
+            <!-- IRRIGATION METHOD -->
+            <!-- ================================================== -->
+
+            <label>
+                Irrigation Method
+            </label>
+
+            <input
+                type="text"
+                name="method"
+                list="irrigationMethodList"
+                placeholder="🔍 Select or type irrigation method..."
+                autocomplete="off"
+                required
+            >
+
+            <datalist id="irrigationMethodList">
+
+                <option value="Drip Irrigation">
+
+                <option value="Sprinkler">
+
+                <option value="Flood Irrigation">
+
+                <option value="Furrow Irrigation">
+
+                <option value="Basin Irrigation">
+
+                <option value="Manual Irrigation">
+
+                <option value="Other">
+
+            </datalist>
+
+
+
+            <!-- ================================================== -->
+            <!-- DATE -->
+            <!-- ================================================== -->
+
+            <label>
+                Date
+            </label>
+
+            <input
+                type="date"
+                name="date"
+                required
+            >
+
+
+
+            <!-- ================================================== -->
+            <!-- SAVE BUTTON -->
+            <!-- ================================================== -->
+
+            <button
+                type="submit"
+                class="save-btn">
+
+                💾 Save Irrigation
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+
+    <!-- ================================================== -->
+    <!-- SAVED IRRIGATION RECORDS -->
+    <!-- ================================================== -->
+
+    <div class="records">
+
+        <h2>
+            📋 Saved Irrigation Records
+        </h2>
+
+
+        {% if irrigations %}
+
+
+        <table>
+
+            <tr>
+
+                <th>
+                    ID
+                </th>
+
+                <th>
+                    Water Source
+                </th>
+
+                <th>
+                    Irrigation Method
+                </th>
+
+                <th>
+                    Date
+                </th>
+
+            </tr>
+
+
+            {% for irrigation in irrigations %}
+
+
+            <tr>
+
+                <td>
+                    {{ irrigation.id }}
+                </td>
+
+                <td>
+                    💧 {{ irrigation.water_source }}
+                </td>
+
+                <td>
+                    🚿 {{ irrigation.method }}
+                </td>
+
+                <td>
+                    {{ irrigation.date }}
+                </td>
+
+            </tr>
+
+
+            {% endfor %}
+
+
+        </table>
+
+
+        {% else %}
+
+
+        <div class="empty">
+
+            No irrigation records added yet.
+
+        </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

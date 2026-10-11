@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Digital Farm | Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo-area">
+
+            <div class="logo-icon">🌾</div>
+
+            <div>
+                <h2>Digital Farm</h2>
+                <span>Farm Management</span>
+            </div>
+
+        </div>
+
+
+        <div class="menu-title">
+            MAIN MENU
+        </div>
+
+
+        <nav>
+
+            <a href="{{ url_for('dashboard') }}"
+               class="menu-item active">
+
+                <span>🏠</span>
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <a href="{{ url_for('crop') }}"
+               class="menu-item">
+
+                <span>🌱</span>
+                <span>Crop Management</span>
+
+            </a>
+
+
+            <a href="{{ url_for('land') }}"
+               class="menu-item">
+
+                <span>🚜</span>
+                <span>Land Management</span>
+
+            </a>
+
+
+            <a href="{{ url_for('fertilizer') }}"
+               class="menu-item">
+
+                <span>🌿</span>
+                <span>Fertilizer</span>
+
+            </a>
+
+
+            <a href="{{ url_for('irrigation') }}"
+               class="menu-item">
+
+                <span>💧</span>
+                <span>Irrigation</span>
+
+            </a>
+
+
+            <a href="{{ url_for('expenses') }}"
+               class="menu-item">
+
+                <span>💸</span>
+                <span>Expenses</span>
+
+            </a>
+
+
+            <a href="{{ url_for('income') }}"
+               class="menu-item">
+
+                <span>💰</span>
+                <span>Income</span>
+
+            </a>
+
+
+            <a href="{{ url_for('harvest') }}"
+               class="menu-item">
+
+                <span>🌾</span>
+                <span>Harvest</span>
+
+            </a>
+
+
+            <a href="{{ url_for('reports') }}"
+               class="menu-item">
+
+                <span>📊</span>
+                <span>Farm Reports</span>
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="{{ url_for('logout') }}"
+               class="logout">
+
+                <span>🚪</span>
+                <span>Logout</span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- ================= MAIN AREA ================= -->
+
+    <main class="main-content">
+
+
+        <!-- TOP HEADER -->
+
+        <header class="top-header">
+
+            <div>
+
+                <h1>Farm Dashboard</h1>
+
+                <p>
+                    Monitor and manage your farm in one place.
+                </p>
+
+            </div>
+
+
+            <div class="header-right">
+
+                <div class="notification">
+                    🔔
+                </div>
+
+                <div class="profile">
+
+                    <div class="profile-icon">
+                        👨‍🌾
+                    </div>
+
+                    <div>
+
+                        <strong>Farmer</strong>
+
+                        <small>
+                            Farm Owner
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ================= WELCOME BANNER ================= -->
+
+        <section class="welcome-banner">
+
+            <div class="welcome-text">
+
+                <span class="small-title">
+                    🌱 FARM OVERVIEW
+                </span>
+
+                <h2>
+                    Welcome back, Farmer! 👨‍🌾
+                </h2>
+
+                <p>
+                    Keep track of your crops, land, income,
+                    expenses and harvest from one simple dashboard.
+                </p>
+
+            </div>
+
+
+            <div class="farm-illustration">
+
+                🌳 🌾 🌱 🚜
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= STAT CARDS ================= -->
+
+        <section class="stats-grid">
+
+
+            <!-- CROPS -->
+
+            <div class="stat-card green">
+
+                <div class="stat-icon">
+                    🌱
+                </div>
+
+                <div class="stat-info">
+
+                    <span>Total Crops</span>
+
+                    <h3>
+                        {{ total_crops }}
+                    </h3>
+
+                    <small>
+                        Crops recorded
+                    </small>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- LAND -->
+
+            <div class="stat-card blue">
+
+                <div class="stat-icon">
+                    🚜
+                </div>
+
+                <div class="stat-info">
+
+                    <span>Land Area</span>
+
+                    <h3>
+                        {{ total_land }}
+                    </h3>
+
+                    <small>
+                        Acres cultivated
+                    </small>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- INCOME -->
+
+            <div class="stat-card orange">
+
+                <div class="stat-icon">
+                    💰
+                </div>
+
+                <div class="stat-info">
+
+                    <span>Total Income</span>
+
+                    <h3>
+                        ₹{{ "%.2f"|format(total_income) }}
+                    </h3>
+
+                    <small>
+                        Farm revenue
+                    </small>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- EXPENSE -->
+
+            <div class="stat-card red">
+
+                <div class="stat-icon">
+                    💸
+                </div>
+
+                <div class="stat-info">
+
+                    <span>Total Expenses</span>
+
+                    <h3>
+                        ₹{{ "%.2f"|format(total_expenses) }}
+                    </h3>
+
+                    <small>
+                        Farm spending
+                    </small>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- HARVEST -->
+
+            <div class="stat-card purple">
+
+                <div class="stat-icon">
+                    🌾
+                </div>
+
+                <div class="stat-info">
+
+                    <span>Total Harvest</span>
+
+                    <h3>
+                        {{ total_harvest }}
+                    </h3>
+
+                    <small>
+                        Kg harvested
+                    </small>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PROFIT -->
+
+            <div class="stat-card dark-green">
+
+                <div class="stat-icon">
+                    📈
+                </div>
+
+                <div class="stat-info">
+
+                    <span>Net Profit</span>
+
+                    <h3>
+                        ₹{{ "%.2f"|format(profit) }}
+                    </h3>
+
+                    <small>
+                        Income − Expenses
+                    </small>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= LOWER SECTION ================= -->
+
+        <section class="dashboard-grid">
+
+
+            <!-- FINANCIAL CHART -->
+
+            <div class="panel chart-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h2>
+                            Financial Overview
+                        </h2>
+
+                        <p>
+                            Income vs Expenses
+                        </p>
+
+                    </div>
+
+                    <span class="chart-label">
+                        This Year
+                    </span>
+
+                </div>
+
+
+                <div class="chart-container">
+
+                    <canvas id="financeChart"></canvas>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- QUICK ACTIONS -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h2>
+                            Quick Actions
+                        </h2>
+
+                        <p>
+                            Manage your farm records
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="quick-actions">
+
+
+                    <a href="{{ url_for('crop') }}"
+                       class="quick-btn">
+
+                        <span>🌱</span>
+
+                        <div>
+
+                            <strong>
+                                Add Crop
+                            </strong>
+
+                            <small>
+                                Record new crop
+                            </small>
+
+                        </div>
+
+                    </a>
+
+
+
+                    <a href="{{ url_for('land') }}"
+                       class="quick-btn">
+
+                        <span>🚜</span>
+
+                        <div>
+
+                            <strong>
+                                Add Land
+                            </strong>
+
+                            <small>
+                                Record land details
+                            </small>
+
+                        </div>
+
+                    </a>
+
+
+
+                    <a href="{{ url_for('fertilizer') }}"
+                       class="quick-btn">
+
+                        <span>🌿</span>
+
+                        <div>
+
+                            <strong>
+                                Fertilizer
+                            </strong>
+
+                            <small>
+                                Add fertilizer
+                            </small>
+
+                        </div>
+
+                    </a>
+
+
+
+                    <a href="{{ url_for('irrigation') }}"
+                       class="quick-btn">
+
+                        <span>💧</span>
+
+                        <div>
+
+                            <strong>
+                                Irrigation
+                            </strong>
+
+                            <small>
+                                Add irrigation
+                            </small>
+
+                        </div>
+
+                    </a>
+
+
+
+                    <a href="{{ url_for('income') }}"
+                       class="quick-btn">
+
+                        <span>💰</span>
+
+                        <div>
+
+                            <strong>
+                                Add Income
+                            </strong>
+
+                            <small>
+                                Record income
+                            </small>
+
+                        </div>
+
+                    </a>
+
+
+
+                    <a href="{{ url_for('expenses') }}"
+                       class="quick-btn">
+
+                        <span>💸</span>
+
+                        <div>
+
+                            <strong>
+                                Add Expense
+                            </strong>
+
+                            <small>
+                                Record expense
+                            </small>
+
+                        </div>
+
+                    </a>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= FARM HEALTH ================= -->
+
+        <section class="bottom-grid">
+
+
+            <div class="panel farm-status">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h2>
+                            🌱 Farm Status
+                        </h2>
+
+                        <p>
+                            Current farm summary
+                        </p>
+
+                    </div>
+
+                    <span class="status-active">
+                        ● Active
+                    </span>
+
+                </div>
+
+
+                <div class="status-list">
+
+
+                    <div class="status-row">
+
+                        <span>
+                            🌱 Crop Records
+                        </span>
+
+                        <strong>
+                            {{ total_crops }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="status-row">
+
+                        <span>
+                            🚜 Cultivated Land
+                        </span>
+
+                        <strong>
+                            {{ total_land }} Acres
+                        </strong>
+
+                    </div>
+
+
+                    <div class="status-row">
+
+                        <span>
+                            🌾 Harvest Production
+                        </span>
+
+                        <strong>
+                            {{ total_harvest }} Kg
+                        </strong>
+
+                    </div>
+
+
+                    <div class="status-row">
+
+                        <span>
+                            📈 Current Profit
+                        </span>
+
+                        <strong class="profit">
+                            ₹{{ "%.2f"|format(profit) }}
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CLIENT FEATURES -->
+
+            <div class="panel feature-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h2>
+                            ⭐ Why Digital Farm?
+                        </h2>
+
+                        <p>
+                            Smart farm management
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="features">
+
+
+                    <div class="feature">
+
+                        <span>
+                            ⚡
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Real-Time Data
+                            </strong>
+
+                            <small>
+                                Dashboard updates from your database.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="feature">
+
+                        <span>
+                            📊
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Smart Reports
+                            </strong>
+
+                            <small>
+                                Understand your complete farm performance.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="feature">
+
+                        <span>
+                            💰
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Profit Tracking
+                            </strong>
+
+                            <small>
+                                Automatically calculate income and expenses.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <footer>
+
+            🌾 Digital Farm Record System
+            <span>•</span>
+            Smart Farming Management
+
+        </footer>
+
+
+    </main>
+
+</div>
+
+
+
+<!-- ================= CHART ================= -->
+
+<script>
+
+const income = Number("{{ total_income }}");
+
+const expenses = Number("{{ total_expenses }}");
+
+
+const ctx =
+document.getElementById("financeChart");
+
+
+new Chart(ctx, {
+
+    type: "bar",
+
+    data: {
+
+        labels: [
+            "Income",
+            "Expenses",
+            "Profit"
+        ],
+
+        datasets: [{
+
+            label: "Amount (₹)",
+
+            data: [
+                income,
+                expenses,
+                income - expenses
+            ],
+
+            backgroundColor: [
+
+                "#2e7d32",
+                "#ef5350",
+                "#1565c0"
+
+            ],
+
+            borderRadius: 10,
+
+            borderWidth: 0
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+            legend: {
+                display: false
+            }
+
+        },
+
+        scales: {
+
+            y: {
+
+                beginAtZero: true,
+
+                grid: {
+                    color: "#eeeeee"
+                }
+
+            },
+
+            x: {
+
+                grid: {
+                    display: false
+                }
+
+            }
+
+        }
+
+    }
+
+});
+
+</script>
+
+
+</body>
+
+</html>

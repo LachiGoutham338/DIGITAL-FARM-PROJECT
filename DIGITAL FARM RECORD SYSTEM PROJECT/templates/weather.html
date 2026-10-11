@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Weather Checking | Digital Farm Record System</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e3f2fd, #e8f5e9);
+            color: #263238;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            background: linear-gradient(135deg, #1565c0, #42a5f5);
+            color: white;
+            padding: 22px 35px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .header h1 {
+            font-size: 27px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: white;
+
+            background: rgba(255,255,255,0.18);
+
+            padding: 10px 18px;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.30);
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .container {
+            width: 92%;
+            max-width: 1100px;
+
+            margin: 35px auto;
+        }
+
+
+        /* =========================
+           SEARCH CARD
+        ========================= */
+
+        .search-card {
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 18px;
+
+            box-shadow: 0 5px 20px rgba(0,0,0,0.10);
+
+            margin-bottom: 25px;
+
+            text-align: center;
+        }
+
+        .search-card h2 {
+            color: #1565c0;
+
+            font-size: 25px;
+
+            margin-bottom: 10px;
+        }
+
+        .search-card p {
+            color: #666;
+
+            margin-bottom: 22px;
+        }
+
+        .search-box {
+            display: flex;
+
+            max-width: 700px;
+
+            margin: auto;
+
+            gap: 10px;
+        }
+
+        .search-box input {
+            flex: 1;
+
+            padding: 15px 18px;
+
+            border: 2px solid #d7e3ea;
+
+            border-radius: 10px;
+
+            outline: none;
+
+            font-size: 16px;
+
+            transition: 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: #42a5f5;
+
+            box-shadow: 0 0 0 3px rgba(66,165,245,0.12);
+        }
+
+        .search-btn {
+            border: none;
+
+            padding: 15px 25px;
+
+            background: linear-gradient(135deg, #1565c0, #42a5f5);
+
+            color: white;
+
+            border-radius: 10px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow: 0 5px 12px rgba(21,101,192,0.30);
+        }
+
+
+        /* =========================
+           EXAMPLE LOCATIONS
+        ========================= */
+
+        .examples {
+            margin-top: 18px;
+
+            color: #777;
+
+            font-size: 13px;
+        }
+
+        .example-btn {
+            border: none;
+
+            background: #e3f2fd;
+
+            color: #1565c0;
+
+            padding: 7px 12px;
+
+            margin: 5px 3px;
+
+            border-radius: 20px;
+
+            cursor: pointer;
+
+            font-size: 12px;
+
+            transition: 0.3s;
+        }
+
+        .example-btn:hover {
+            background: #bbdefb;
+        }
+
+
+        /* =========================
+           LOADING
+        ========================= */
+
+        .loading {
+            display: none;
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+
+            margin-bottom: 25px;
+        }
+
+        .spinner {
+            width: 38px;
+            height: 38px;
+
+            border: 4px solid #e3f2fd;
+
+            border-top: 4px solid #1565c0;
+
+            border-radius: 50%;
+
+            animation: spin 1s linear infinite;
+
+            margin: auto auto 12px;
+        }
+
+        @keyframes spin {
+
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+
+        }
+
+
+        /* =========================
+           ERROR
+        ========================= */
+
+        .error {
+            display: none;
+
+            background: #ffebee;
+
+            color: #c62828;
+
+            border-left: 5px solid #c62828;
+
+            padding: 15px 18px;
+
+            border-radius: 10px;
+
+            margin-bottom: 25px;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           WEATHER CARD
+        ========================= */
+
+        .weather-card {
+            display: none;
+
+            background: white;
+
+            border-radius: 20px;
+
+            box-shadow: 0 6px 25px rgba(0,0,0,0.12);
+
+            overflow: hidden;
+
+            margin-bottom: 30px;
+        }
+
+        .weather-top {
+            background: linear-gradient(135deg, #1976d2, #64b5f6);
+
+            color: white;
+
+            padding: 30px;
+
+            text-align: center;
+        }
+
+        .weather-top h2 {
+            font-size: 28px;
+
+            margin-bottom: 6px;
+        }
+
+        .weather-top .location {
+            font-size: 15px;
+
+            opacity: 0.9;
+        }
+
+        .weather-main {
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 20px;
+
+            padding: 25px;
+        }
+
+        .weather-icon {
+            width: 100px;
+            height: 100px;
+        }
+
+        .temperature {
+            font-size: 50px;
+
+            font-weight: bold;
+
+            color: #1565c0;
+        }
+
+        .condition {
+            color: #555;
+
+            font-size: 18px;
+
+            text-transform: capitalize;
+
+            margin-top: 5px;
+        }
+
+
+        /* =========================
+           WEATHER DETAILS
+        ========================= */
+
+        .weather-details {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 15px;
+
+            padding: 0 25px 30px;
+        }
+
+        .detail-card {
+            background: #f5f9fc;
+
+            border: 1px solid #e1edf5;
+
+            border-radius: 12px;
+
+            padding: 18px;
+
+            text-align: center;
+
+            transition: 0.3s;
+        }
+
+        .detail-card:hover {
+            transform: translateY(-3px);
+
+            box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+        }
+
+        .detail-icon {
+            font-size: 27px;
+
+            margin-bottom: 8px;
+        }
+
+        .detail-title {
+            color: #777;
+
+            font-size: 12px;
+
+            margin-bottom: 6px;
+        }
+
+        .detail-value {
+            color: #1565c0;
+
+            font-size: 18px;
+
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           WEATHER EXTRA
+        ========================= */
+
+        .weather-extra {
+            background: #f8fbfd;
+
+            border-top: 1px solid #e5edf2;
+
+            padding: 20px 25px;
+
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 15px;
+        }
+
+        .extra-item {
+            display: flex;
+
+            justify-content: space-between;
+
+            padding: 10px 5px;
+
+            border-bottom: 1px solid #e8eef2;
+
+            font-size: 14px;
+        }
+
+        .extra-item span:first-child {
+            color: #777;
+        }
+
+        .extra-item span:last-child {
+            font-weight: bold;
+
+            color: #37474f;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+            text-align: center;
+
+            color: #777;
+
+            font-size: 13px;
+
+            padding: 25px;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .weather-details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .weather-extra {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .header {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+
+                padding: 18px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-btn {
+                width: 100%;
+            }
+
+            .weather-main {
+                flex-direction: column;
+            }
+
+            .temperature {
+                font-size: 42px;
+            }
+
+            .weather-details {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header class="header">
+
+        <div>
+
+            <h1>🌤️ Weather Checking</h1>
+
+            <p>
+                Digital Farm Record System
+            </p>
+
+        </div>
+
+        <a href="/reports" class="back-btn">
+            ← Back to Reports
+        </a>
+
+    </header>
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main class="container">
+
+
+        <!-- SEARCH -->
+
+        <section class="search-card">
+
+            <h2>🌦️ Check Current Weather</h2>
+
+            <p>
+                Enter any city or place to check its current weather information.
+            </p>
+
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="cityInput"
+                    placeholder="Enter city or place..."
+                    autocomplete="off"
+                >
+
+                <button
+                    type="button"
+                    class="search-btn"
+                    onclick="getWeather()"
+                >
+                    🔍 Check Weather
+                </button>
+
+            </div>
+
+
+            <div class="examples">
+
+                Try:
+
+                <button
+                    class="example-btn"
+                    onclick="searchCity('Hyderabad')"
+                >
+                    Hyderabad
+                </button>
+
+                <button
+                    class="example-btn"
+                    onclick="searchCity('Medchal')"
+                >
+                    Medchal
+                </button>
+
+                <button
+                    class="example-btn"
+                    onclick="searchCity('Delhi')"
+                >
+                    Delhi
+                </button>
+
+                <button
+                    class="example-btn"
+                    onclick="searchCity('Mumbai')"
+                >
+                    Mumbai
+                </button>
+
+                <button
+                    class="example-btn"
+                    onclick="searchCity('Bengaluru')"
+                >
+                    Bengaluru
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- LOADING -->
+
+        <div
+            class="loading"
+            id="loading"
+        >
+
+            <div class="spinner"></div>
+
+            <p>
+                Checking current weather...
+            </p>
+
+        </div>
+
+
+        <!-- ERROR -->
+
+        <div
+            class="error"
+            id="errorBox"
+        ></div>
+
+
+        <!-- =========================
+             WEATHER RESULT
+        ========================= -->
+
+        <section
+            class="weather-card"
+            id="weatherCard"
+        >
+
+
+            <!-- WEATHER HEADER -->
+
+            <div class="weather-top">
+
+                <h2 id="locationName">
+                    --
+                </h2>
+
+                <div
+                    class="location"
+                    id="locationDetails"
+                >
+                    --
+                </div>
+
+            </div>
+
+
+            <!-- MAIN WEATHER -->
+
+            <div class="weather-main">
+
+                <img
+                    id="weatherIcon"
+                    class="weather-icon"
+                    src=""
+                    alt="Weather icon"
+                >
+
+                <div>
+
+                    <div
+                        class="temperature"
+                        id="temperature"
+                    >
+                        --°C
+                    </div>
+
+                    <div
+                        class="condition"
+                        id="condition"
+                    >
+                        --
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- WEATHER DETAILS -->
+
+            <div class="weather-details">
+
+
+                <div class="detail-card">
+
+                    <div class="detail-icon">
+                        🌡️
+                    </div>
+
+                    <div class="detail-title">
+                        Feels Like
+                    </div>
+
+                    <div
+                        class="detail-value"
+                        id="feelsLike"
+                    >
+                        -- °C
+                    </div>
+
+                </div>
+
+
+                <div class="detail-card">
+
+                    <div class="detail-icon">
+                        💧
+                    </div>
+
+                    <div class="detail-title">
+                        Humidity
+                    </div>
+
+                    <div
+                        class="detail-value"
+                        id="humidity"
+                    >
+                        -- %
+                    </div>
+
+                </div>
+
+
+                <div class="detail-card">
+
+                    <div class="detail-icon">
+                        💨
+                    </div>
+
+                    <div class="detail-title">
+                        Wind Speed
+                    </div>
+
+                    <div
+                        class="detail-value"
+                        id="windSpeed"
+                    >
+                        -- m/s
+                    </div>
+
+                </div>
+
+
+                <div class="detail-card">
+
+                    <div class="detail-icon">
+                        ☁️
+                    </div>
+
+                    <div class="detail-title">
+                        Cloudiness
+                    </div>
+
+                    <div
+                        class="detail-value"
+                        id="cloudiness"
+                    >
+                        -- %
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- EXTRA DETAILS -->
+
+            <div class="weather-extra">
+
+
+                <div class="extra-item">
+
+                    <span>
+                        🌡️ Minimum Temperature
+                    </span>
+
+                    <span id="minTemperature">
+                        --
+                    </span>
+
+                </div>
+
+
+                <div class="extra-item">
+
+                    <span>
+                        🌡️ Maximum Temperature
+                    </span>
+
+                    <span id="maxTemperature">
+                        --
+                    </span>
+
+                </div>
+
+
+                <div class="extra-item">
+
+                    <span>
+                        🎯 Pressure
+                    </span>
+
+                    <span id="pressure">
+                        --
+                    </span>
+
+                </div>
+
+
+                <div class="extra-item">
+
+                    <span>
+                        👁️ Visibility
+                    </span>
+
+                    <span id="visibility">
+                        --
+                    </span>
+
+                </div>
+
+
+                <div class="extra-item">
+
+                    <span>
+                        🧭 Wind Direction
+                    </span>
+
+                    <span id="windDirection">
+                        --
+                    </span>
+
+                </div>
+
+
+                <div class="extra-item">
+
+                    <span>
+                        🌅 Sunrise
+                    </span>
+
+                    <span id="sunrise">
+                        --
+                    </span>
+
+                </div>
+
+
+                <div class="extra-item">
+
+                    <span>
+                        🌇 Sunset
+                    </span>
+
+                    <span id="sunset">
+                        --
+                    </span>
+
+                </div>
+
+
+                <div class="extra-item">
+
+                    <span>
+                        📍 Coordinates
+                    </span>
+
+                    <span id="coordinates">
+                        --
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        Digital Farm Record System © 2026
+
+    </footer>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+
+        /* =========================
+           SEARCH EXAMPLE CITY
+        ========================= */
+
+        function searchCity(city) {
+
+            document.getElementById("cityInput").value = city;
+
+            getWeather();
+
+        }
+
+
+        /* =========================
+           GET WEATHER
+        ========================= */
+
+        async function getWeather() {
+
+
+            const cityInput =
+                document.getElementById("cityInput");
+
+            const city =
+                cityInput.value.trim();
+
+
+            const loading =
+                document.getElementById("loading");
+
+            const errorBox =
+                document.getElementById("errorBox");
+
+            const weatherCard =
+                document.getElementById("weatherCard");
+
+
+            /* Check empty input */
+
+            if (city === "") {
+
+                errorBox.innerText =
+                    "Please enter a city or place.";
+
+                errorBox.style.display = "block";
+
+                weatherCard.style.display = "none";
+
+                return;
+
+            }
+
+
+            /* Show loading */
+
+            loading.style.display = "block";
+
+            errorBox.style.display = "none";
+
+            weatherCard.style.display = "none";
+
+
+            try {
+
+
+                const response = await fetch(
+                    "/api/weather?city=" +
+                    encodeURIComponent(city)
+                );
+
+
+                let data;
+
+
+                try {
+
+                    data = await response.json();
+
+                }
+
+                catch (jsonError) {
+
+                    throw new Error(
+                        "The server returned an invalid response."
+                    );
+
+                }
+
+
+                /* API error */
+
+                if (!response.ok || !data.success) {
+
+                    throw new Error(
+                        data.error ||
+                        "Unable to get weather information."
+                    );
+
+                }
+
+
+                /* =========================
+                   DISPLAY LOCATION
+                ========================= */
+
+                document.getElementById(
+                    "locationName"
+                ).innerText =
+                    data.location || city;
+
+
+                let locationDetails = "";
+
+
+                if (data.state) {
+
+                    locationDetails +=
+                        data.state + ", ";
+
+                }
+
+
+                if (data.country) {
+
+                    locationDetails +=
+                        data.country;
+
+                }
+
+
+                document.getElementById(
+                    "locationDetails"
+                ).innerText =
+                    locationDetails;
+
+
+                /* =========================
+                   MAIN WEATHER
+                ========================= */
+
+                document.getElementById(
+                    "temperature"
+                ).innerText =
+                    Number(data.temperature).toFixed(1) +
+                    "°C";
+
+
+                document.getElementById(
+                    "condition"
+                ).innerText =
+                    data.description || "Unknown";
+
+
+                /* =========================
+                   WEATHER ICON
+                ========================= */
+
+                if (data.icon) {
+
+                    document.getElementById(
+                        "weatherIcon"
+                    ).src =
+                        "https://openweathermap.org/img/wn/" +
+                        data.icon +
+                        "@2x.png";
+
+                }
+
+
+                /* =========================
+                   DETAILS
+                ========================= */
+
+                document.getElementById(
+                    "feelsLike"
+                ).innerText =
+                    Number(data.feels_like).toFixed(1) +
+                    " °C";
+
+
+                document.getElementById(
+                    "humidity"
+                ).innerText =
+                    data.humidity + " %";
+
+
+                document.getElementById(
+                    "windSpeed"
+                ).innerText =
+                    data.wind_speed + " m/s";
+
+
+                document.getElementById(
+                    "cloudiness"
+                ).innerText =
+                    data.cloudiness + " %";
+
+
+                /* =========================
+                   EXTRA INFORMATION
+                ========================= */
+
+                document.getElementById(
+                    "minTemperature"
+                ).innerText =
+                    Number(data.min_temperature).toFixed(1) +
+                    " °C";
+
+
+                document.getElementById(
+                    "maxTemperature"
+                ).innerText =
+                    Number(data.max_temperature).toFixed(1) +
+                    " °C";
+
+
+                document.getElementById(
+                    "pressure"
+                ).innerText =
+                    data.pressure + " hPa";
+
+
+                document.getElementById(
+                    "visibility"
+                ).innerText =
+                    data.visibility + " km";
+
+
+                document.getElementById(
+                    "windDirection"
+                ).innerText =
+                    data.wind_direction + "°";
+
+
+                document.getElementById(
+                    "sunrise"
+                ).innerText =
+                    data.sunrise || "--";
+
+
+                document.getElementById(
+                    "sunset"
+                ).innerText =
+                    data.sunset || "--";
+
+
+                document.getElementById(
+                    "coordinates"
+                ).innerText =
+                    Number(data.latitude).toFixed(4) +
+                    ", " +
+                    Number(data.longitude).toFixed(4);
+
+
+                /* Show weather */
+
+                weatherCard.style.display = "block";
+
+
+            }
+
+            catch (error) {
+
+
+                console.error(
+                    "Weather Error:",
+                    error
+                );
+
+
+                errorBox.innerText =
+                    "❌ " +
+                    (
+                        error.message ||
+                        "Unable to check weather."
+                    );
+
+
+                errorBox.style.display =
+                    "block";
+
+
+                weatherCard.style.display =
+                    "none";
+
+            }
+
+
+            finally {
+
+                loading.style.display =
+                    "none";
+
+            }
+
+        }
+
+
+        /* =========================
+           ENTER KEY
+        ========================= */
+
+        document.getElementById(
+            "cityInput"
+        ).addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Enter") {
+
+                    getWeather();
+
+                }
+
+            }
+        );
+
+
+    </script>
+
+
+</body>
+
+</html>
